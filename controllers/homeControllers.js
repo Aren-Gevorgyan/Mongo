@@ -6,7 +6,3 @@ exports.getIndex = (request, response) => {
 exports.gteAbout = (request, response) => {
     response.send("About");
 };
-
-exports.getLogin = (request, response) => {
-     response.data
-}
