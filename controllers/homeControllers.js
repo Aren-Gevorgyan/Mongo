@@ -1,3 +1,4 @@
+
 exports.getIndex = (request, response) => {
     response.send("index page");
 };
