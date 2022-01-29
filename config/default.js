@@ -1,3 +1,3 @@
 module.exports = {
-    secretKey: "SECRET_KEY_AUTH"
+    secretKey: "nodeJs_my_unique_secret_key"
 }
