@@ -21,10 +21,20 @@ const generateAccessToken = (id) => {
     id,
   };
 
-  return jwt.sign(payload, secretKey, { expiresIn: "24h" });
+  return jwt.sign(payload, {expiresIn : '1h'}, secretKey);
 };
 
-exports.registration = (response, data) => {
+const findOneUser = async (response, data) => {
+  return await user.findOne(data).clone();
+};
+
+const findAllUser = (response) => {
+  user.find({ deleted: { $ne: true } }, (err, res) => {
+    response.json(res);
+  });
+};
+
+const registration = (response, data) => {
   user.create(data, (err, res) => {
     if (err) {
       return response
@@ -35,11 +45,11 @@ exports.registration = (response, data) => {
   });
 };
 
-exports.login = async (request, response) => {
+const login = async (request, response) => {
   try {
     const { email, password } = request.body;
-
-    const userData = await user.findOne({
+  
+    const userData = await findOneUser({
       query: {
         email,
       },
@@ -64,17 +74,7 @@ exports.login = async (request, response) => {
   }
 };
 
-exports.findAllUser = (response) => {
-  user.find({ deleted: { $ne: true } }, (err, res) => {
-    response.json(res);
-  });
-};
-
-exports.findUser = async (response, data) => {
-  return await user.find(data).clone();
-};
-
-exports.upgradeUser = (response, id, data) => {
+const upgradeUser = (response, id, data) => {
   const upgradeId = new ObjectId(id);
 
   user.findOneAndUpdate(
@@ -89,7 +89,7 @@ exports.upgradeUser = (response, id, data) => {
   );
 };
 
-exports.deleteUser = (response, id) => {
+const deleteUser = (response, id) => {
   const getId = new ObjectId(id);
 
   user.findOneAndUpdate({ _id: getId }, { deleted: true }, (err, res) => {
@@ -97,3 +97,12 @@ exports.deleteUser = (response, id) => {
     response.json(res);
   });
 };
+
+module.exports = {
+  findAllUser,
+  findOneUser,
+  registration,
+  login,
+  upgradeUser,
+  deleteUser,
+}
