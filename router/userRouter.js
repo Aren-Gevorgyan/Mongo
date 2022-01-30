@@ -2,6 +2,7 @@ const express = require("express");
 const jsonParser = express.json();
 const userRouter = express.Router();
 const userControllers = require("../controllers/userControllers.js");
+const { authMiddleware } = require("../middleware/authMiddleware");
 const { check } = require("express-validator");
 
 userRouter.post(
@@ -16,11 +17,11 @@ userRouter.post(
   ],
   userControllers.registration
 );
-userRouter.use('/login', jsonParser, userControllers.login);
+userRouter.use("/login", jsonParser, userControllers.login);
 
 userRouter.get("/:id", userControllers.getOneUser);
 userRouter.delete("/:id", userControllers.deleteUser);
 userRouter.put("/:id", jsonParser, userControllers.upgradeUser);
-userRouter.get("/", userControllers.getUsers);
+userRouter.get("/", authMiddleware, userControllers.getUsers);
 
 module.exports = userRouter;
