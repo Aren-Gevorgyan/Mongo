@@ -16,12 +16,13 @@ const userSchema = new Schema({
 
 const user = mongoose.model("User", userSchema);
 
-const generateAccessToken = (id) => {
+const generateAccessToken = (id, name) => {
   const payload = {
     id,
+    name
   };
 
-  return jwt.sign(payload, {expiresIn : '1h'}, secretKey);
+  return jwt.sign(payload,  secretKey, {expiresIn : '1h'});
 };
 
 const findOneUser = async (response, data) => {
@@ -64,7 +65,7 @@ const login = async (request, response) => {
     if (!ifPassword)
       return response.status(400).json({ message: "Password not found" });
 
-    const myToken = generateAccessToken(userData._id);
+    const myToken = generateAccessToken(userData._id, userData.name);
     
     response.json({ token: myToken });
 

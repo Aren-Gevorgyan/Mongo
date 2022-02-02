@@ -9,7 +9,7 @@ mongoose.connect("mongodb://localhost:27017/usersdb", {
   useNewUrlParser: true,
 }, (err)=>{
   if(err) return console.log(err);
-  app.listen("3030", () => {
+  app.listen("3050", () => {
     console.log("Connect success");
   });
 });
