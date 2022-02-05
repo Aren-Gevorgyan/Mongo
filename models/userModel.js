@@ -6,12 +6,12 @@ const jwt = require("jsonwebtoken");
 const { secretKey } = require("../config/default");
 
 const userSchema = new Schema({
-  name: { type: String, required: true },
-  age: { type: Number, required: true },
+  name: { type: String },
+  age: { type: Number },
   country: [String],
   deleted: { type: Boolean },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  email: { type: String, unique: true },
+  password: { type: String, },
 });
 
 const user = mongoose.model("User", userSchema);
